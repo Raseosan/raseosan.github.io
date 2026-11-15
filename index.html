@@ -34,6 +34,8 @@
   .hero p { font: 500 13px/1.4 "IBM Plex Mono", monospace; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin: -26px 0 0; }
 
   /* the logo's sun stripes, reused as the section rule */
+  .hero .count { margin-top: 14px; letter-spacing: .14em; color: #6f6a79; }
+  .hero .count span { color: var(--gold); }
   .stripes { height: 14px; margin: 44px 0 30px; background: repeating-linear-gradient(180deg, transparent 0 3px, var(--pink) 3px 5px);
     -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); opacity: .85; }
   .stripes.warm { background: repeating-linear-gradient(180deg, transparent 0 3px, var(--orange) 3px 5px); }
@@ -95,6 +97,7 @@
   <header class="hero">
     <img src="img/so-sun-logo.png" alt="So Sun Game Studio" width="640" height="640">
     <p>Independent games</p>
+    <p class="count" aria-live="polite"><span id="visits">1,234</span> visits</p>
   </header>
 
   <div class="stripes"></div>
@@ -142,8 +145,8 @@
         <p class="lead">Stranded with a tribe of strangers. Only one walks away the winner.</p>
         <p>Build alliances, find hidden idols, win challenges and survive tribal council. Everyone at camp has their own plans, and not everything you hear is true.</p>
         <div class="actions">
-          <a class="btn" href="https://testflight.apple.com/join/5nY78xYC">Sign up for testing</a>
-          <span class="small">iPhone, through TestFlight. On Android? <a href="mailto:soe.sun.games@gmail.com?subject=Castaway%20Island%20Android%20testing">Email us</a> and we'll add you.</span>
+          <a class="btn" href="https://raseosan.github.io/castaway-testers/" data-track="castaway_signup">Sign up for testing</a>
+          <span class="small">iPhone or Android. We'll send you an invite.</span>
         </div>
         <p class="small" style="margin-top:14px"><a href="castaway/privacy.html">Privacy policy</a></p>
       </div>
@@ -174,9 +177,6 @@
       <div class="body">
         <p class="lead">You are an employee. The tower does not match its floor plan. You are going up anyway.</p>
         <p>Every floor is generated, every weapon replaces the one you hold, and every item stacks with every other item, including the combinations nobody planned for.</p>
-        <div class="actions">
-          <a class="btn alt" href="https://raseosan.github.io/office-isaac/">Try the early build in your browser</a>
-        </div>
       </div>
     </details>
 
@@ -204,7 +204,41 @@
     <p class="small">Support, press, testing, or just to say hi.</p>
   </section>
 
-  <footer>© 2026 So Sun Studios &nbsp;·&nbsp; <a href="app-ads.txt">app-ads.txt</a></footer>
+  <footer>© 2026 So Sun Studios &nbsp;·&nbsp; <a href="app-ads.txt">app-ads.txt</a><br><span style="opacity:.8">This site counts visits anonymously (PostHog, EU servers). No ads, nothing sold.</span></footer>
 </div>
+<script>
+/* visit counter: one count per browser session, starting from 1,234 (abacus.jasoncameron.dev, sosun-studios/visits) */
+(function () {
+  var counted = false; try { counted = sessionStorage.getItem("sosun_counted") === "1"; } catch (e) {}
+  var url = "https://abacus.jasoncameron.dev/" + (counted ? "get" : "hit") + "/sosun-studios/visits";
+  fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+    if (j && typeof j.value === "number") { document.getElementById("visits").textContent = j.value.toLocaleString("en-US"); try { sessionStorage.setItem("sosun_counted", "1"); } catch (e) {} }
+  }).catch(function () {});
+})();
+
+/* analytics: PostHog (EU). Page views, country/city (from the IP, by PostHog), every click, which games get opened,
+   time on page, referrer. Super property site=so-sun-studios separates it from the Rock Rise game events. */
+(function () {
+  var s = document.createElement("script"); s.async = true; s.src = "https://eu-assets.i.posthog.com/static/array.js";
+  s.onload = function () {
+    if (!window.posthog || !window.posthog.init) return;
+    posthog.init("phc_Cpv3EW3yz5dcbLrqD7YDwLD3vKigddDuUrLu9fqXpeyg", { api_host: "https://eu.i.posthog.com", autocapture: true, capture_pageview: true, capture_pageleave: true, persistence: "localStorage", person_profiles: "identified_only", disable_session_recording: true, disable_surveys: true });
+    posthog.register({ site: "so-sun-studios" });
+  };
+  document.head.appendChild(s);
+  var t0 = Date.now();
+  function cap(ev, props) { try { if (window.posthog && posthog.capture) posthog.capture(ev, props); } catch (e) {} }
+  document.querySelectorAll("details.game").forEach(function (d) {
+    d.addEventListener("toggle", function () { if (d.open) cap("site_game_opened", { game: d.id }); });
+  });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a"); if (!a) return;
+    var g = a.closest("details.game");
+    cap("site_link_clicked", { href: a.href, label: (a.textContent || "").trim().slice(0, 60), game: g ? g.id : null, kind: a.dataset.track || null });
+  }, true);
+  function leave() { cap("site_time_spent", { seconds: Math.round((Date.now() - t0) / 1000), opened: Array.prototype.filter.call(document.querySelectorAll("details.game"), function (d) { return d.open; }).map(function (d) { return d.id; }) }); }
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") leave(); });
+})();
+</script>
 </body>
 </html>
