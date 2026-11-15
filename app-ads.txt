@@ -1,4 +1,4 @@
-# Soe Sun Studios — authorized sellers for our apps (https://iabtechlab.com/ads-txt/)
+# So Sun Studios — authorized sellers for our apps (https://iabtechlab.com/ads-txt/)
 # Google AdMob
 google.com, pub-8926442164518057, DIRECT, f08c47fec0942fa0
 # AppLovin MAX: the line from your AppLovin account (Account → app-ads.txt) goes here once the account is set up.

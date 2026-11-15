@@ -3,86 +3,208 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Soe Sun Studios — independent game developer</title>
-<meta name="description" content="Soe Sun Studios is an independent game studio. Makers of Rock Rise, the band game where you play every gig by hand.">
-<link rel="icon" href="img/rock-rise-icon.png">
+<title>So Sun Studios</title>
+<meta name="description" content="So Sun Studios makes games: Rock Rise, Castaway Island, A-Maze, Corporate Ladder and SEED.">
+<meta property="og:title" content="So Sun Studios">
+<meta property="og:image" content="https://raseosan.github.io/img/so-sun-logo.png">
+<link rel="icon" href="img/so-sun-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#16121C; --cream:#F2ECDD; --pink:#FF3D7F; --yellow:#FFD23F; --cyan:#7CE7FF; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--ink); color:var(--cream); line-height:1.55; }
-  main { max-width:760px; margin:0 auto; padding:40px 20px 60px; }
-  a { color:var(--yellow); }
-  header h1 { font-size:2.2rem; margin:0 0 4px; letter-spacing:.02em; }
-  header p { margin:0; opacity:.8; }
-  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan); margin:44px 0 14px; }
-  .app { background:#211b2a; border:2px solid #3a3242; border-radius:14px; padding:20px; margin-bottom:18px; }
-  .app-head { display:flex; gap:16px; align-items:center; }
-  .app-head img { width:84px; height:84px; border-radius:18px; flex-shrink:0; }
-  .app-head h3 { margin:0; font-size:1.45rem; }
-  .tag { display:inline-block; font-size:.78rem; font-weight:700; padding:2px 9px; border-radius:99px; background:var(--pink); color:var(--ink); margin-top:6px; }
-  .tag.dev { background:#3a3242; color:var(--cream); }
-  .shots { display:flex; gap:10px; overflow-x:auto; margin:16px 0 4px; padding-bottom:6px; }
-  .shots img { height:300px; border-radius:10px; flex-shrink:0; }
-  .links { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
-  .links a { text-decoration:none; font-weight:700; font-size:.92rem; padding:8px 14px; border-radius:8px; border:2px solid var(--yellow); }
-  .links a.main { background:var(--yellow); color:var(--ink); }
-  footer { margin-top:50px; font-size:.88rem; opacity:.75; }
+  :root {
+    --night: #01010A;
+    --ink: #0b0a16;
+    --line: #23202e;
+    --cream: #f4ede4;
+    --dim: #a59fae;
+    --pink: #f0325f;
+    --orange: #ff7a2f;
+    --gold: #ffc23d;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--night); }
+  body { margin: 0; color: var(--cream); font: 400 17px/1.6 "IBM Plex Sans", system-ui, sans-serif; }
+  a { color: var(--gold); text-underline-offset: 3px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+
+  /* the logo IS the header — the page background is the logo's own black, so it has no edge */
+  .hero { text-align: center; padding: 34px 0 8px; }
+  .hero img { width: min(380px, 78vw); height: auto; display: block; margin: 0 auto; }
+  .hero p { font: 500 13px/1.4 "IBM Plex Mono", monospace; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin: -26px 0 0; }
+
+  /* the logo's sun stripes, reused as the section rule */
+  .stripes { height: 14px; margin: 44px 0 30px; background: repeating-linear-gradient(180deg, transparent 0 3px, var(--pink) 3px 5px);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); opacity: .85; }
+  .stripes.warm { background: repeating-linear-gradient(180deg, transparent 0 3px, var(--orange) 3px 5px); }
+
+  h2 { font: 800 15px/1 "Bricolage Grotesque", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+
+  /* games: one row each, opens in place */
+  .game { border-top: 1px solid var(--line); }
+  .game:last-of-type { border-bottom: 1px solid var(--line); }
+  .game summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 30px 58px 1fr auto 18px; align-items: center; gap: 14px; padding: 16px 4px; }
+  .game summary::-webkit-details-marker { display: none; }
+  .game summary:hover .name { color: var(--gold); }
+  .game summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+  .num { font: 500 13px "IBM Plex Mono", monospace; color: var(--dim); }
+  .icon { width: 58px; height: 58px; border-radius: 14px; display: block; background: var(--ink); }
+  .name { font: 800 clamp(20px, 4.6vw, 26px)/1.1 "Bricolage Grotesque", sans-serif; transition: color .15s; }
+  .kind { display: block; font: 400 14px/1.3 "IBM Plex Sans", sans-serif; color: var(--dim); margin-top: 3px; }
+  .status { font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
+  .status::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; background: var(--dim); }
+  .status.live { color: var(--cream); } .status.live::before { background: #4fd18b; }
+  .status.test { color: var(--cream); } .status.test::before { background: var(--gold); }
+  .chev { width: 10px; height: 10px; border-right: 2px solid var(--dim); border-bottom: 2px solid var(--dim); transform: rotate(45deg); transition: transform .2s; justify-self: end; margin-top: -4px; }
+  .game[open] .chev { transform: rotate(-135deg); margin-top: 4px; }
+
+  .body { padding: 0 4px 26px 116px; }
+  .body p { margin: 0 0 12px; color: #e6dfd6; }
+  .body .lead { font: 500 19px/1.45 "Bricolage Grotesque", sans-serif; color: var(--cream); }
+  .banner { width: 100%; border-radius: 12px; display: block; margin: 4px 0 16px; }
+  .shots { display: flex; gap: 10px; overflow-x: auto; margin: 6px 0 16px; padding-bottom: 6px; scrollbar-width: thin; }
+  .shots img { height: 260px; border-radius: 10px; flex-shrink: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 6px; }
+  .btn { display: inline-block; font: 800 15px "Bricolage Grotesque", sans-serif; text-decoration: none; color: var(--night); background: var(--gold); padding: 10px 18px; border-radius: 999px; }
+  .btn:hover { background: #ffd56e; }
+  .btn.alt { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 2px #3a3546; }
+  .btn.alt:hover { box-shadow: inset 0 0 0 2px var(--gold); }
+  .small { font-size: 14px; color: var(--dim); }
+  .small a { color: var(--dim); }
+
+  .contact p { margin: 0 0 8px; }
+  .contact .mail { font: 800 clamp(20px, 5vw, 28px) "Bricolage Grotesque", sans-serif; color: var(--cream); text-decoration: none; border-bottom: 3px solid var(--pink); }
+  footer { margin: 56px 0 40px; font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .08em; color: #6f6a79; }
+  footer a { color: #6f6a79; }
+
+  @media (max-width: 560px) {
+    .game summary { grid-template-columns: 50px 1fr 16px; gap: 12px; }
+    .num { display: none; }
+    .icon { width: 50px; height: 50px; border-radius: 12px; }
+    .status { grid-column: 2; grid-row: 2; margin-top: -6px; }
+    .chev { grid-column: 3; grid-row: 1; }
+    .body { padding-left: 4px; }
+    .shots img { height: 220px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <h1>Soe Sun Studios</h1>
-    <p>An independent game studio. Small team, loud games.</p>
+<div class="wrap">
+
+  <header class="hero">
+    <img src="img/so-sun-logo.png" alt="So Sun Game Studio" width="640" height="640">
+    <p>Independent games</p>
   </header>
 
-  <h2>Our games</h2>
+  <div class="stripes"></div>
 
-  <section class="app" id="rock-rise">
-    <div class="app-head">
-      <img src="img/rock-rise-icon.png" alt="Rock Rise app icon">
-      <div>
-        <h3>Rock Rise: Road to Stardom</h3>
-        <span class="tag">Out now · iPhone, Android, web</span>
+  <section aria-labelledby="games">
+    <h2 id="games">Games</h2>
+
+    <details class="game" id="rock-rise">
+      <summary>
+        <span class="num">01</span>
+        <img class="icon" src="img/icon-rock-rise.webp" alt="">
+        <span><span class="name">Rock Rise</span><span class="kind">Band management + rhythm game</span></span>
+        <span class="status live">Out now</span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="body">
+        <p class="lead">Form a band in a garage. End up headlining the planet.</p>
+        <p>Write songs, build the setlist, then play every show yourself: tap the beat, ride the amp, survive the encore. Design each member of the band, read every crowd, release singles and albums, and climb the charts against rival bands, from the garage to stages far beyond Earth.</p>
+        <p>12 genres, 136 original tracks, no pay-to-win. Ages 9 and up. In English, Español, Português, Français, <bdi>עברית</bdi>, 日本語 and 简体中文.</p>
+        <div class="shots">
+          <img src="img/rr-1-gig.webp" alt="Playing a gig" loading="lazy">
+          <img src="img/rr-2-band.webp" alt="Designing the band" loading="lazy">
+          <img src="img/rr-3-venues.webp" alt="Choosing a venue" loading="lazy">
+          <img src="img/rr-4-songs.webp" alt="Writing songs" loading="lazy">
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.rockrise.game">Google Play</a>
+          <a class="btn" href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">App Store</a>
+          <a class="btn alt" href="https://raseosan.github.io/rock-rise-app/">Play in the browser</a>
+        </div>
+        <p class="small" style="margin-top:14px"><a href="https://raseosan.github.io/rock-rise-app/privacy.html">Privacy policy</a> · <a href="https://raseosan.github.io/rock-rise-app/delete.html">Delete your data</a></p>
       </div>
-    </div>
-    <p>Form a band in a garage. End up headlining the planet.</p>
-    <p>Rock Rise is a band-management game with a real rhythm game at its heart. Write songs, build the setlist, then actually <b>play</b> the show: tap the beat, ride the amp, survive the encore. Design every member of the band, read each crowd, release singles and albums, and climb the charts against rival bands across more than 40 venues, from the garage to stages far beyond Earth.</p>
-    <p>12 genres, 136 original tracks, no pay-to-win. Rated for ages 9 and up, and playable in English, Español, Português, Français, <bdi>עברית</bdi>, 日本語 and 简体中文.</p>
-    <div class="shots">
-      <img src="img/rr-1-gig.webp" alt="Playing a gig in Rock Rise" loading="lazy">
-      <img src="img/rr-2-band.webp" alt="Designing the band" loading="lazy">
-      <img src="img/rr-3-venues.webp" alt="Choosing a venue" loading="lazy">
-      <img src="img/rr-4-songs.webp" alt="Writing songs" loading="lazy">
-    </div>
-    <div class="links">
-      <a class="main" href="https://play.google.com/store/apps/details?id=com.rockrise.game">Google Play</a>
-      <a class="main" href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">App Store</a>
-      <a href="https://raseosan.github.io/rock-rise-app/">Play in your browser</a>
-      <a href="https://raseosan.github.io/rock-rise-app/privacy.html">Privacy policy</a>
-      <a href="https://raseosan.github.io/rock-rise-app/delete.html">Delete your data</a>
-    </div>
+    </details>
+
+    <details class="game" id="castaway">
+      <summary>
+        <span class="num">02</span>
+        <img class="icon" src="img/icon-castaway.webp" alt="">
+        <span><span class="name">Castaway Island</span><span class="kind">Survival strategy, outwit and outlast</span></span>
+        <span class="status test">In testing</span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="body">
+        <img class="banner" src="img/castaway-banner.webp" alt="Castaway Island" loading="lazy">
+        <p class="lead">Stranded with a tribe of strangers. Only one walks away the winner.</p>
+        <p>Build alliances, find hidden idols, win challenges and survive tribal council. Everyone at camp has their own plans, and not everything you hear is true.</p>
+        <div class="actions">
+          <a class="btn" href="https://testflight.apple.com/join/5nY78xYC">Sign up for testing</a>
+          <span class="small">iPhone, through TestFlight. On Android? <a href="mailto:soe.sun.games@gmail.com?subject=Castaway%20Island%20Android%20testing">Email us</a> and we'll add you.</span>
+        </div>
+        <p class="small" style="margin-top:14px"><a href="castaway/privacy.html">Privacy policy</a></p>
+      </div>
+    </details>
+
+    <details class="game" id="a-maze">
+      <summary>
+        <span class="num">03</span>
+        <img class="icon" src="img/icon-amaze.webp" alt="">
+        <span><span class="name">A-Maze</span><span class="kind">Dungeon race</span></span>
+        <span class="status">In development</span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="body">
+        <p class="lead">Two racers, one hidden dungeon, a golden star in the middle.</p>
+        <p>You and a rival start in different corners of the same dark maze. There is no map and no arrow: you only see a few steps around you, so you explore, follow your rival's fading footprints, and slow them down with silly weapons and traps. A race takes about four minutes.</p>
+      </div>
+    </details>
+
+    <details class="game" id="corporate-ladder">
+      <summary>
+        <span class="num">04</span>
+        <img class="icon" src="img/icon-corporate-ladder.webp" alt="">
+        <span><span class="name">Corporate Ladder</span><span class="kind">Action roguelike</span></span>
+        <span class="status">In development</span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="body">
+        <p class="lead">You are an employee. The tower does not match its floor plan. You are going up anyway.</p>
+        <p>Every floor is generated, every weapon replaces the one you hold, and every item stacks with every other item, including the combinations nobody planned for.</p>
+        <div class="actions">
+          <a class="btn alt" href="https://raseosan.github.io/office-isaac/">Try the early build in your browser</a>
+        </div>
+      </div>
+    </details>
+
+    <details class="game" id="seed">
+      <summary>
+        <span class="num">05</span>
+        <img class="icon" src="img/icon-seed.webp" alt="">
+        <span><span class="name">SEED</span><span class="kind">Space exploration over deep time</span></span>
+        <span class="status">In development</span>
+        <span class="chev" aria-hidden="true"></span>
+      </summary>
+      <div class="body">
+        <img class="banner" src="img/seed-shot.webp" alt="A star system in SEED" loading="lazy">
+        <p class="lead">You are Seed-0, humanity's first machine mind sent to the stars.</p>
+        <p>Explore new systems, build outposts, copy yourself, and watch your copies grow into minds of their own across thousands of years.</p>
+      </div>
+    </details>
   </section>
 
-  <section class="app" id="castaway-island">
-    <div class="app-head">
-      <div>
-        <h3>Castaway Island</h3>
-        <span class="tag dev">In development</span>
-      </div>
-    </div>
-    <p>Our next game, currently in closed testing.</p>
-    <div class="links">
-      <a href="castaway/privacy.html">Privacy policy</a>
-    </div>
+  <div class="stripes warm"></div>
+
+  <section class="contact" aria-labelledby="contact">
+    <h2 id="contact">Contact</h2>
+    <p><a class="mail" href="mailto:soe.sun.games@gmail.com">soe.sun.games@gmail.com</a></p>
+    <p class="small">Support, press, testing, or just to say hi.</p>
   </section>
 
-  <h2>Contact</h2>
-  <p>Questions, support or press: <a href="mailto:soe.sun.games@gmail.com">soe.sun.games@gmail.com</a></p>
-
-  <footer>
-    <p>&copy; 2026 Soe Sun Studios · <a href="app-ads.txt">app-ads.txt</a></p>
-  </footer>
-</main>
+  <footer>© 2026 So Sun Studios &nbsp;·&nbsp; <a href="app-ads.txt">app-ads.txt</a></footer>
+</div>
 </body>
 </html>
