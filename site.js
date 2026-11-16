@@ -52,8 +52,13 @@ seqs.forEach((c) => loadWatch.observe(c))
 // Keep the canvas pixel size equal to its on-screen size (capped at 2x for memory on phones).
 function fit (c) {
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const w = Math.round(c.clientWidth * dpr)
-  const h = Math.round(c.clientHeight * dpr)
+  // Guard: never let the pixel buffer outgrow the frame around the canvas. If CSS ever sizes the
+  // canvas from its own buffer again, this stops the grow-on-every-repaint loop.
+  const box = c.parentElement
+  const cw = Math.min(c.clientWidth, box.clientWidth)
+  const ch = Math.min(c.clientHeight, box.clientHeight)
+  const w = Math.round(cw * dpr)
+  const h = Math.round(ch * dpr)
   if (w && h && (c.width !== w || c.height !== h)) { c.width = w; c.height = h; c._last = -1 }
 }
 
