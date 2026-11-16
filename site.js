@@ -1,52 +1,93 @@
 // So Sun Studios — small page behaviours. No libraries: the site must stay a plain static page.
 
-// Clips never play by themselves. Scroll is the playhead: scrolling down moves a clip forward,
-// scrolling up moves it back, and when the reader stops, the clip stops.
-// The scrub.mp4 files carry a keyframe every 4 frames, so any seek lands fast and scrubbing stays smooth.
-const clips = [...document.querySelectorAll('video[data-scrub]')]
-const near = new Set() // Clips on or near the screen. Only these get seeked.
+// Clips never play by themselves. Scroll is the playhead: scrolling down steps a clip forward,
+// scrolling up steps it back, and when the reader stops, the clip stops.
+// Each clip is a set of JPEG sheets (4x4 frames each, made by tools/make-frames.py) painted on a
+// canvas. Video seeking was tried first and froze on phones: iOS Safari drops most seeks during
+// a touch scroll. Painting from an already-decoded image is instant on every device.
+const seqs = [...document.querySelectorAll('canvas.seq')]
+const near = new Set() // Canvases on or near the screen. Only these get painted.
+const sheetCache = new Map() // url -> Image. The reel and the game list share the same sheets.
+
+function sheet (url) {
+  let img = sheetCache.get(url)
+  if (!img) {
+    img = new Image()
+    img.decoding = 'async'
+    img.onload = requestTick // A sheet that lands late may hold the frame on screen now.
+    img.src = url
+    sheetCache.set(url, img)
+  }
+  return img
+}
+
+function setup (c) {
+  const d = c.dataset
+  c._n = +d.n
+  c._cols = +d.cols
+  c._per = c._cols * c._cols
+  c._fw = +d.w
+  c._fh = +d.h
+  c._ctx = c.getContext('2d')
+  c._last = -1
+  // Ask for every sheet now: the first one first, so the opening frames are ready soonest.
+  c._sheets = []
+  for (let i = 0; i < Math.ceil(c._n / c._per); i++) c._sheets.push(sheet(`${d.seq}/sheet-${i + 1}.jpg`))
+}
 
 const loadWatch = new IntersectionObserver((entries) => {
   for (const e of entries) {
-    const v = e.target
+    const c = e.target
     if (e.isIntersecting) {
-      near.add(v)
-      // Load the source on first sight only, so off-screen clips cost nothing.
-      if (!v.dataset.loaded) {
-        v.dataset.loaded = '1'
-        for (const s of v.querySelectorAll('source[data-src]')) s.src = s.dataset.src
-        v.preload = 'auto'
-        v.load()
-        // iOS Safari draws no frame after a seek until the video has played once. A muted
-        // play-then-pause unlocks it; elsewhere it is harmless.
-        v.addEventListener('loadeddata', () => {
-          v.play().then(() => v.pause()).catch(() => {})
-          requestTick()
-        }, { once: true })
-      }
+      if (!c._sheets) setup(c)
+      near.add(c)
     } else {
-      near.delete(v)
+      near.delete(c)
     }
   }
-}, { rootMargin: '300px 0px' })
-clips.forEach((v) => loadWatch.observe(v))
+  requestTick()
+}, { rootMargin: '400px 0px' })
+seqs.forEach((c) => loadWatch.observe(c))
 
-// Map how far a clip has travelled through the screen (0 = entering at the bottom,
-// 1 = leaving at the top) onto its timeline.
-function scrub (v) {
-  if (!v.duration || v.readyState < 1) return
-  const r = v.getBoundingClientRect()
+// Keep the canvas pixel size equal to its on-screen size (capped at 2x for memory on phones).
+function fit (c) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const w = Math.round(c.clientWidth * dpr)
+  const h = Math.round(c.clientHeight * dpr)
+  if (w && h && (c.width !== w || c.height !== h)) { c.width = w; c.height = h; c._last = -1 }
+}
+
+// Pick the frame from how far the canvas has travelled through the screen
+// (0 = entering at the bottom, 1 = leaving at the top), then paint it cover-cropped.
+function paint (c) {
+  fit(c)
+  const r = c.getBoundingClientRect()
   const vh = window.innerHeight
   const p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)))
-  const t = p * (v.duration - 0.05)
-  // Do not stack seeks: a new seek while one is pending makes Chrome drop frames.
-  // The 'seeked' handler below picks up the latest position when this one lands.
-  if (v.seeking) { v._want = t; return }
-  if (Math.abs(v.currentTime - t) > 1 / 48) v.currentTime = t
+  let f = Math.round(p * (c._n - 1))
+  // If that frame's sheet has not arrived yet, fall back to the nearest loaded one.
+  const ready = (i) => { const im = c._sheets[Math.floor(i / c._per)]; return im.complete && im.naturalWidth > 0 }
+  if (!ready(f)) {
+    let alt = -1
+    for (let k = 1; k < c._n && alt < 0; k++) {
+      if (f - k >= 0 && ready(f - k)) alt = f - k
+      else if (f + k < c._n && ready(f + k)) alt = f + k
+    }
+    if (alt < 0) return // Nothing loaded yet: the poster background keeps showing.
+    f = alt
+  }
+  if (f === c._last) return
+  c._last = f
+  const img = c._sheets[Math.floor(f / c._per)]
+  const cell = f % c._per
+  const fx = (cell % c._cols) * c._fw
+  const fy = Math.floor(cell / c._cols) * c._fh
+  const s = Math.max(c.width / c._fw, c.height / c._fh)
+  const sw = c.width / s
+  const sh = c.height / s
+  c._ctx.drawImage(img, fx + (c._fw - sw) / 2, fy + (c._fh - sh) / 2, sw, sh, 0, 0, c.width, c.height)
+  c.style.backgroundImage = 'none' // The canvas now covers the poster; stop painting both.
 }
-clips.forEach((v) => v.addEventListener('seeked', () => {
-  if (v._want != null) { const t = v._want; v._want = null; v.currentTime = t }
-}))
 
 // The hero reel also slides sideways with scroll, so nothing moves while the page is still.
 const reelTrack = document.querySelector('.reel__track')
@@ -57,7 +98,7 @@ function requestTick () {
   ticking = true
   requestAnimationFrame(() => {
     ticking = false
-    near.forEach(scrub)
+    near.forEach(paint)
     if (reelTrack) reelTrack.style.setProperty('--x', `${-window.scrollY * 0.6}px`)
   })
 }

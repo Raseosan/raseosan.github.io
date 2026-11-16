@@ -109,7 +109,7 @@ h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.1; }
   display: flex; align-items: center; gap: 2rem;
   width: min(var(--max), calc(100% - 2rem));
   padding: .55rem .55rem .55rem 1.25rem;
-  background: rgba(255, 255, 255, .72);
+  background: rgba(255, 255, 255, .92);
   backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border: 1px solid rgba(236, 239, 244, .9); border-radius: 999px;
   box-shadow: 0 8px 24px -12px rgba(16, 24, 40, .15);
@@ -150,7 +150,7 @@ h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.1; }
 .reel { margin-top: 4.5rem; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .reel__track { display: flex; gap: 1rem; width: max-content; transform: translate3d(var(--x, 0px), 0, 0); will-change: transform; }
 .reel__item { height: clamp(180px, 22vw, 280px); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow); background: var(--bg-soft); flex: none; }
-.reel__item video, .reel__item img { height: 100%; width: 100%; object-fit: cover; }
+.reel__item .seq, .reel__item img { height: 100%; width: 100%; object-fit: cover; }
 
 /* ---------- Sections ---------- */
 section { position: relative; }
@@ -194,9 +194,9 @@ section { position: relative; }
 }
 .stop:nth-child(odd of .stop) .stop__media { order: 2; }
 .stop__media { position: relative; border-radius: var(--r-md); overflow: hidden; background: var(--tint, var(--bg-soft)); box-shadow: var(--shadow); aspect-ratio: 16 / 10; }
-.stop__media video { width: 100%; height: 100%; object-fit: cover; }
+.stop__media .seq { width: 100%; height: 100%; }
 .stop__media--portrait { display: grid; place-items: center; aspect-ratio: 4 / 5; }
-.stop__media--portrait video { width: auto; height: 90%; aspect-ratio: 9 / 16; border-radius: 1.25rem; box-shadow: var(--shadow-lift); object-fit: cover; }
+.stop__media--portrait .seq { width: auto; height: 90%; aspect-ratio: 9 / 16; border-radius: 1.25rem; box-shadow: var(--shadow-lift); object-fit: cover; }
 .stop__text h3 { margin: .5rem 0 1rem; font-size: clamp(2rem, 3.4vw, 2.75rem); }
 .stop__text p { color: var(--ink-2); margin: 0 0 1.25rem; }
 .ticks { list-style: none; padding: 0; margin: 0 0 1.75rem; display: grid; gap: .6rem; }
@@ -307,3 +307,8 @@ img.logo__sun { border-radius: 50%; background: #01010a; object-fit: cover; }
 .signup__msg { margin: .6rem 0 0 1.25rem; font-size: .9rem; min-height: 1.35em; color: var(--ink-3); }
 .signup__msg.is-error { color: #b42318; }
 .signup.is-done .signup__msg { margin-left: 0; color: var(--green); font-weight: 600; font-size: 1rem; }
+
+/* ---------- Scroll frames ----------
+   A canvas that site.js paints one frame at a time, picked by scroll position.
+   The poster sits behind it as a background, so something shows before the frames arrive. */
+.seq { display: block; background: center / cover no-repeat; }

@@ -51,14 +51,14 @@
       <p class="count reveal" aria-live="polite"><span id="visits">1,234</span> visits</p>
     </div>
 
-    <!-- Sideways reel of real gameplay. Page scroll moves it sideways and scrubs its clips. -->
+    <!-- Sideways reel of real gameplay. Page scroll moves it sideways and steps its clips through their frames. -->
     <div class="reel" aria-hidden="true">
       <div class="reel__track">
-        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/castaway/poster.jpg"><source data-src="assets/games/castaway/scrub.mp4" type="video/mp4"></video></div>
-        <div class="reel__item" style="aspect-ratio:9/16"><video data-scrub muted playsinline preload="none" poster="assets/games/rock-rise/poster.jpg"><source data-src="assets/games/rock-rise/scrub.mp4" type="video/mp4"></video></div>
-        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/seed/poster.jpg"><source data-src="assets/games/seed/scrub.mp4" type="video/mp4"></video></div>
-        <div class="reel__item" style="aspect-ratio:9/16"><video data-scrub muted playsinline preload="none" poster="assets/games/a-maze/poster.jpg"><source data-src="assets/games/a-maze/scrub.mp4" type="video/mp4"></video></div>
-        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/corporate-ladder/poster.jpg"><source data-src="assets/games/corporate-ladder/scrub.mp4" type="video/mp4"></video></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><canvas class="seq" data-seq="assets/games/castaway/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/castaway/poster.jpg)" aria-hidden="true"></canvas></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><canvas class="seq" data-seq="assets/games/rock-rise/frames" data-n="64" data-cols="4" data-w="400" data-h="712" style="background-image:url(assets/games/rock-rise/poster.jpg)" aria-hidden="true"></canvas></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><canvas class="seq" data-seq="assets/games/seed/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/seed/poster.jpg)" aria-hidden="true"></canvas></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><canvas class="seq" data-seq="assets/games/a-maze/frames" data-n="64" data-cols="4" data-w="400" data-h="868" style="background-image:url(assets/games/a-maze/poster.jpg)" aria-hidden="true"></canvas></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><canvas class="seq" data-seq="assets/games/corporate-ladder/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/corporate-ladder/poster.jpg)" aria-hidden="true"></canvas></div>
         <!-- Second set: stills only, to keep the number of videos low. -->
         <div class="reel__item" style="aspect-ratio:16/9"><img src="assets/games/castaway/shot-1.jpg" alt="" loading="lazy"></div>
         <div class="reel__item" style="aspect-ratio:9/16"><img src="assets/games/rock-rise/shot-1.jpg" alt="" loading="lazy"></div>
@@ -85,7 +85,7 @@
         <article class="stop" id="rock-rise">
           <span class="stop__dot">01</span>
           <div class="stop__media stop__media--portrait reveal" style="--tint:var(--peach)">
-            <video data-scrub muted playsinline preload="none" poster="assets/games/rock-rise/poster.jpg" aria-label="Rock Rise gameplay: a live set at Colossus Stadium"><source data-src="assets/games/rock-rise/scrub.mp4" type="video/mp4"></video>
+            <canvas class="seq" data-seq="assets/games/rock-rise/frames" data-n="64" data-cols="4" data-w="400" data-h="712" style="background-image:url(assets/games/rock-rise/poster.jpg)" role="img" aria-label="Rock Rise gameplay: a live set at Colossus Stadium"></canvas>
           </div>
           <div class="stop__text reveal">
             <span class="tag">Out now · iPhone, Android &amp; web</span>
@@ -124,7 +124,7 @@
         <article class="stop" id="castaway">
           <span class="stop__dot">02</span>
           <div class="stop__media reveal" style="--tint:var(--droplet)">
-            <video data-scrub muted playsinline preload="none" poster="assets/games/castaway/poster.jpg" aria-label="Castaway Island gameplay: camp, a relay challenge and tribal council"><source data-src="assets/games/castaway/scrub.mp4" type="video/mp4"></video>
+            <canvas class="seq" data-seq="assets/games/castaway/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/castaway/poster.jpg)" role="img" aria-label="Castaway Island gameplay: camp, a relay challenge and tribal council"></canvas>
           </div>
           <div class="stop__text reveal">
             <span class="tag tag--test">In testing · iPhone &amp; Android</span>
@@ -161,7 +161,7 @@
         <article class="stop" id="a-maze">
           <span class="stop__dot">03</span>
           <div class="stop__media stop__media--portrait reveal" style="--tint:var(--yellow)">
-            <video data-scrub muted playsinline preload="none" poster="assets/games/a-maze/poster.jpg" aria-label="A-Maze gameplay: racing through a fogged temple maze"><source data-src="assets/games/a-maze/scrub.mp4" type="video/mp4"></video>
+            <canvas class="seq" data-seq="assets/games/a-maze/frames" data-n="64" data-cols="4" data-w="400" data-h="868" style="background-image:url(assets/games/a-maze/poster.jpg)" role="img" aria-label="A-Maze gameplay: racing through a fogged temple maze"></canvas>
           </div>
           <div class="stop__text reveal">
             <span class="tag tag--dev">In development</span>
@@ -194,7 +194,7 @@
         <article class="stop" id="corporate-ladder">
           <span class="stop__dot">04</span>
           <div class="stop__media reveal" style="--tint:#05060a">
-            <video data-scrub muted playsinline preload="none" poster="assets/games/corporate-ladder/poster.jpg" aria-label="Corporate Ladder gameplay: clearing an office corridor"><source data-src="assets/games/corporate-ladder/scrub.mp4" type="video/mp4"></video>
+            <canvas class="seq" data-seq="assets/games/corporate-ladder/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/corporate-ladder/poster.jpg)" role="img" aria-label="Corporate Ladder gameplay: clearing an office corridor"></canvas>
           </div>
           <div class="stop__text reveal">
             <span class="tag tag--dev">In development</span>
@@ -227,7 +227,7 @@
         <article class="stop" id="seed">
           <span class="stop__dot">05</span>
           <div class="stop__media reveal" style="--tint:#03040a">
-            <video data-scrub muted playsinline preload="none" poster="assets/games/seed/poster.jpg" aria-label="SEED: zooming from the Seed-0 probe out to the whole galaxy"><source data-src="assets/games/seed/scrub.mp4" type="video/mp4"></video>
+            <canvas class="seq" data-seq="assets/games/seed/frames" data-n="64" data-cols="4" data-w="640" data-h="360" style="background-image:url(assets/games/seed/poster.jpg)" role="img" aria-label="SEED: zooming from the Seed-0 probe out to the whole galaxy"></canvas>
           </div>
           <div class="stop__text reveal">
             <span class="tag tag--dev">In development</span>
