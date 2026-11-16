@@ -277,3 +277,33 @@ img.logo__sun { border-radius: 50%; background: #01010a; object-fit: cover; }
 .small a:hover { color: var(--green); }
 /* The full logo sits on its own black square, so give it a rounded tile. */
 .footer__logo { width: 9rem; height: auto; border-radius: var(--r); box-shadow: var(--shadow); }
+
+/* ---------- "Sign up to try!" — a button that opens into an email field ---------- */
+.signup { margin-top: 1rem; max-width: 26rem; }
+/* Sun-yellow, so it stands apart from the green store and play buttons. */
+.btn--sun { --btn-bg: var(--sun); --btn-fg: var(--ink); --btn-fill: var(--ink); --btn-fg-hover: var(--sun); }
+.signup__field {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .35rem .35rem .35rem 1.25rem; border-radius: 999px;
+  background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow);
+  transform-origin: left center;
+  animation: signup-open .5s var(--ease-out);
+}
+/* .btn sets display, which would beat the hidden attribute. */
+.signup [hidden] { display: none !important; }
+.signup__field:focus-within { border-color: var(--green-leaf); box-shadow: 0 0 0 4px var(--green-tint), var(--shadow); }
+@keyframes signup-open { from { opacity: 0; transform: scaleX(.4); } to { opacity: 1; transform: none; } }
+.signup__field input[type="email"] { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: 500 1rem/1.4 var(--font-ui); color: var(--ink); padding: .5rem 0; }
+.signup__field input::placeholder { color: var(--ink-3); }
+/* Bots fill every field; people never see this one. A filled trap makes FormSubmit drop the message. */
+.signup__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.signup__send {
+  flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 0; border-radius: 50%;
+  background: var(--green); color: #fff; cursor: pointer; transition: background .2s, transform .3s var(--ease-out);
+}
+.signup__send:hover { background: var(--green-2); transform: translateX(2px); }
+.signup__send svg { width: 1.2rem; height: 1.2rem; }
+.signup.is-sending .signup__send { opacity: .6; pointer-events: none; }
+.signup__msg { margin: .6rem 0 0 1.25rem; font-size: .9rem; min-height: 1.35em; color: var(--ink-3); }
+.signup__msg.is-error { color: #b42318; }
+.signup.is-done .signup__msg { margin-left: 0; color: var(--green); font-weight: 600; font-size: 1rem; }

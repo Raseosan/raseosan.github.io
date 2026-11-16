@@ -103,3 +103,66 @@ if (box) {
   box.addEventListener('click', close)
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close() })
 }
+
+// "Sign up to try!" — the button opens into an email field. A send posts the game and the
+// address to FormSubmit, which emails the studio. GitHub Pages has no server, so a form relay
+// is the only way a static page can send mail.
+// FormSubmit needs a one-time activation: the first submission sends an "Activate Form" email
+// to this address, and nothing is delivered until someone clicks it.
+const SIGNUP_ENDPOINT = 'https://formsubmit.co/ajax/soe.sun.games@gmail.com'
+const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
+document.querySelectorAll('form.signup').forEach((form) => {
+  const game = form.dataset.game
+  const open = form.querySelector('.signup__open')
+  const field = form.querySelector('.signup__field')
+  const input = form.querySelector('input[type="email"]')
+  const trap = form.querySelector('.signup__trap')
+  const msg = form.querySelector('.signup__msg')
+  const say = (text, isError) => { msg.textContent = text; msg.classList.toggle('is-error', !!isError) }
+
+  // Clear an old error as soon as the player starts fixing the address.
+  input.addEventListener('input', () => { if (msg.classList.contains('is-error')) say('') })
+
+  open.addEventListener('click', () => {
+    open.hidden = true
+    field.hidden = false
+    input.focus()
+  })
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (form.classList.contains('is-sending')) return
+    const email = input.value.trim()
+    if (!EMAIL_OK.test(email)) { say('Please type a full email address, like name@example.com.', true); input.focus(); return }
+
+    form.classList.add('is-sending')
+    say('Sending…')
+    try {
+      const res = await fetch(SIGNUP_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Sign-up to try: ${game}`,
+          _template: 'table',
+          _captcha: 'false',
+          _honey: trap.value, // Filled only by bots. FormSubmit discards those.
+          _replyto: email, // So "Reply" in the inbox goes straight to the player.
+          game,
+          email
+        })
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok || String(data.success) === 'false') throw new Error(data.message || `HTTP ${res.status}`)
+      form.classList.add('is-done')
+      field.hidden = true
+      say(`Thanks! We'll email you when ${game} is ready to try.`)
+      // Count the sign-up, never the address.
+      try { if (window.posthog && posthog.capture) posthog.capture('site_signup', { game }) } catch (_) {}
+    } catch (err) {
+      say('That did not go through. Please try again, or email soe.sun.games@gmail.com.', true)
+    } finally {
+      form.classList.remove('is-sending')
+    }
+  })
+})
