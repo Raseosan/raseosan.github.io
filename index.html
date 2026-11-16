@@ -3,209 +3,293 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>So Sun Studios</title>
+<title>So Sun Studios — independent games</title>
 <meta name="description" content="So Sun Studios makes games: Rock Rise, Castaway Island, A-Maze, Corporate Ladder and SEED.">
 <meta property="og:title" content="So Sun Studios">
+<meta property="og:description" content="Small studio. Big little worlds.">
 <meta property="og:image" content="https://raseosan.github.io/img/so-sun-logo.png">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="img/so-sun-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --night: #01010A;
-    --ink: #0b0a16;
-    --line: #23202e;
-    --cream: #f4ede4;
-    --dim: #a59fae;
-    --pink: #f0325f;
-    --orange: #ff7a2f;
-    --gold: #ffc23d;
-  }
-  * { box-sizing: border-box; }
-  html { background: var(--night); }
-  body { margin: 0; color: var(--cream); font: 400 17px/1.6 "IBM Plex Sans", system-ui, sans-serif; }
-  a { color: var(--gold); text-underline-offset: 3px; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
-
-  /* the logo IS the header — the page background is the logo's own black, so it has no edge */
-  .hero { text-align: center; padding: 34px 0 8px; }
-  .hero img { width: min(380px, 78vw); height: auto; display: block; margin: 0 auto; }
-  .hero p { font: 500 13px/1.4 "IBM Plex Mono", monospace; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin: -26px 0 0; }
-
-  /* the logo's sun stripes, reused as the section rule */
-  .hero .count { margin-top: 14px; letter-spacing: .14em; color: #6f6a79; }
-  .hero .count span { color: var(--gold); }
-  .stripes { height: 14px; margin: 44px 0 30px; background: repeating-linear-gradient(180deg, transparent 0 3px, var(--pink) 3px 5px);
-    -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); opacity: .85; }
-  .stripes.warm { background: repeating-linear-gradient(180deg, transparent 0 3px, var(--orange) 3px 5px); }
-
-  h2 { font: 800 15px/1 "Bricolage Grotesque", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
-
-  /* games: one row each, opens in place */
-  .game { border-top: 1px solid var(--line); }
-  .game:last-of-type { border-bottom: 1px solid var(--line); }
-  .game summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 30px 58px 1fr auto 18px; align-items: center; gap: 14px; padding: 16px 4px; }
-  .game summary::-webkit-details-marker { display: none; }
-  .game summary:hover .name { color: var(--gold); }
-  .game summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
-  .num { font: 500 13px "IBM Plex Mono", monospace; color: var(--dim); }
-  .icon { width: 58px; height: 58px; border-radius: 14px; display: block; background: var(--ink); }
-  .name { font: 800 clamp(20px, 4.6vw, 26px)/1.1 "Bricolage Grotesque", sans-serif; transition: color .15s; }
-  .kind { display: block; font: 400 14px/1.3 "IBM Plex Sans", sans-serif; color: var(--dim); margin-top: 3px; }
-  .status { font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
-  .status::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; background: var(--dim); }
-  .status.live { color: var(--cream); } .status.live::before { background: #4fd18b; }
-  .status.test { color: var(--cream); } .status.test::before { background: var(--gold); }
-  .chev { width: 10px; height: 10px; border-right: 2px solid var(--dim); border-bottom: 2px solid var(--dim); transform: rotate(45deg); transition: transform .2s; justify-self: end; margin-top: -4px; }
-  .game[open] .chev { transform: rotate(-135deg); margin-top: 4px; }
-
-  .body { padding: 0 4px 26px 116px; }
-  .body p { margin: 0 0 12px; color: #e6dfd6; }
-  .body .lead { font: 500 19px/1.45 "Bricolage Grotesque", sans-serif; color: var(--cream); }
-  .banner { width: 100%; border-radius: 12px; display: block; margin: 4px 0 16px; }
-  .shots { display: flex; gap: 10px; overflow-x: auto; margin: 6px 0 16px; padding-bottom: 6px; scrollbar-width: thin; }
-  .shots img { height: 260px; border-radius: 10px; flex-shrink: 0; }
-  .actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 6px; }
-  .btn { display: inline-block; font: 800 15px "Bricolage Grotesque", sans-serif; text-decoration: none; color: var(--night); background: var(--gold); padding: 10px 18px; border-radius: 999px; }
-  .btn:hover { background: #ffd56e; }
-  .btn.alt { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 2px #3a3546; }
-  .btn.alt:hover { box-shadow: inset 0 0 0 2px var(--gold); }
-  .small { font-size: 14px; color: var(--dim); }
-  .small a { color: var(--dim); }
-
-  .contact p { margin: 0 0 8px; }
-  .contact .mail { font: 800 clamp(20px, 5vw, 28px) "Bricolage Grotesque", sans-serif; color: var(--cream); text-decoration: none; border-bottom: 3px solid var(--pink); }
-  footer { margin: 56px 0 40px; font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .08em; color: #6f6a79; }
-  footer a { color: #6f6a79; }
-
-  @media (max-width: 560px) {
-    .game summary { grid-template-columns: 50px 1fr 16px; gap: 12px; }
-    .num { display: none; }
-    .icon { width: 50px; height: 50px; border-radius: 12px; }
-    .status { grid-column: 2; grid-row: 2; margin-top: -6px; }
-    .chev { grid-column: 3; grid-row: 1; }
-    .body { padding-left: 4px; }
-    .shots img { height: 220px; }
-  }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Inter+Tight:wght@500;600&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrap">
 
-  <header class="hero">
-    <img src="img/so-sun-logo.png" alt="So Sun Game Studio" width="640" height="640">
-    <p>Independent games</p>
-    <p class="count" aria-live="polite"><span id="visits">1,234</span> visits</p>
-  </header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arrow" viewBox="0 0 20 20"><path d="M5 10h10M11 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
 
-  <div class="stripes"></div>
+<header class="nav">
+  <div class="nav__bar">
+    <a class="logo" href="#top"><img class="logo__sun" src="img/so-sun-mark.webp" alt="" width="64" height="64">So Sun Studios</a>
+    <nav class="nav__links">
+      <a href="#games">Games</a>
+      <a href="#get">Rock Rise</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn--sm" href="#get">Get Rock Rise</a>
+  </div>
+</header>
 
-  <section aria-labelledby="games">
-    <h2 id="games">Games</h2>
+<main id="top">
 
-    <details class="game" id="rock-rise">
-      <summary>
-        <span class="num">01</span>
-        <img class="icon" src="img/icon-rock-rise.webp" alt="">
-        <span><span class="name">Rock Rise</span><span class="kind">Band management + rhythm game</span></span>
-        <span class="status live">Out now</span>
-        <span class="chev" aria-hidden="true"></span>
-      </summary>
-      <div class="body">
-        <p class="lead">Form a band in a garage. End up headlining the planet.</p>
-        <p>Write songs, build the setlist, then play every show yourself: tap the beat, ride the amp, survive the encore. Design each member of the band, read every crowd, release singles and albums, and climb the charts against rival bands, from the garage to stages far beyond Earth.</p>
-        <p>12 genres, 136 original tracks, no pay-to-win. Ages 9 and up. In English, Español, Português, Français, <bdi>עברית</bdi>, 日本語 and 简体中文.</p>
-        <div class="shots">
-          <img src="img/rr-1-gig.webp" alt="Playing a gig" loading="lazy">
-          <img src="img/rr-2-band.webp" alt="Designing the band" loading="lazy">
-          <img src="img/rr-3-venues.webp" alt="Choosing a venue" loading="lazy">
-          <img src="img/rr-4-songs.webp" alt="Writing songs" loading="lazy">
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://play.google.com/store/apps/details?id=com.rockrise.game">Google Play</a>
-          <a class="btn" href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">App Store</a>
-          <a class="btn alt" href="https://raseosan.github.io/rock-rise-app/">Play in the browser</a>
-        </div>
-        <p class="small" style="margin-top:14px"><a href="https://raseosan.github.io/rock-rise-app/privacy.html">Privacy policy</a> · <a href="https://raseosan.github.io/rock-rise-app/delete.html">Delete your data</a></p>
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero__glow"><span></span><span></span><span></span></div>
+    <div class="wrap">
+      <h1 class="reveal">Small studio. <span class="serif">Big little</span> worlds.</h1>
+      <p class="lead reveal">So Sun Studios makes independent games you pick up on your phone and lose an evening in. One is out now. Four more are on the way.</p>
+      <div class="chips reveal">
+        <a class="chip" href="#rock-rise"><img src="img/icon-rock-rise.webp" alt="">Rock Rise</a>
+        <a class="chip" href="#castaway"><img src="img/icon-castaway.webp" alt="">Castaway Island</a>
+        <a class="chip" href="#a-maze"><img src="img/icon-amaze.webp" alt="">A-Maze</a>
+        <a class="chip" href="#corporate-ladder"><img src="img/icon-corporate-ladder.webp" alt="">Corporate Ladder</a>
+        <a class="chip" href="#seed"><img src="img/icon-seed.webp" alt="">SEED</a>
       </div>
-    </details>
+      <p class="count reveal" aria-live="polite"><span id="visits">1,234</span> visits</p>
+    </div>
 
-    <details class="game" id="castaway">
-      <summary>
-        <span class="num">02</span>
-        <img class="icon" src="img/icon-castaway.webp" alt="">
-        <span><span class="name">Castaway Island</span><span class="kind">Survival strategy, outwit and outlast</span></span>
-        <span class="status test">In testing</span>
-        <span class="chev" aria-hidden="true"></span>
-      </summary>
-      <div class="body">
-        <img class="banner" src="img/castaway-banner.webp" alt="Castaway Island" loading="lazy">
-        <p class="lead">Stranded with a tribe of strangers. Only one walks away the winner.</p>
-        <p>Build alliances, find hidden idols, win challenges and survive tribal council. Everyone at camp has their own plans, and not everything you hear is true.</p>
-        <div class="actions">
-          <a class="btn" href="https://raseosan.github.io/castaway-testers/" data-track="castaway_signup">Sign up for testing</a>
-          <span class="small">iPhone or Android. We'll send you an invite.</span>
-        </div>
-        <p class="small" style="margin-top:14px"><a href="castaway/privacy.html">Privacy policy</a></p>
+    <!-- Sideways reel of real gameplay. Page scroll moves it sideways and scrubs its clips. -->
+    <div class="reel" aria-hidden="true">
+      <div class="reel__track">
+        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/castaway/poster.jpg"><source data-src="assets/games/castaway/scrub.mp4" type="video/mp4"></video></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><video data-scrub muted playsinline preload="none" poster="assets/games/rock-rise/poster.jpg"><source data-src="assets/games/rock-rise/scrub.mp4" type="video/mp4"></video></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/seed/poster.jpg"><source data-src="assets/games/seed/scrub.mp4" type="video/mp4"></video></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><video data-scrub muted playsinline preload="none" poster="assets/games/a-maze/poster.jpg"><source data-src="assets/games/a-maze/scrub.mp4" type="video/mp4"></video></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><video data-scrub muted playsinline preload="none" poster="assets/games/corporate-ladder/poster.jpg"><source data-src="assets/games/corporate-ladder/scrub.mp4" type="video/mp4"></video></div>
+        <!-- Second set: stills only, to keep the number of videos low. -->
+        <div class="reel__item" style="aspect-ratio:16/9"><img src="assets/games/castaway/shot-1.jpg" alt="" loading="lazy"></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><img src="assets/games/rock-rise/shot-1.jpg" alt="" loading="lazy"></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><img src="assets/games/seed/shot-1.jpg" alt="" loading="lazy"></div>
+        <div class="reel__item" style="aspect-ratio:9/16"><img src="assets/games/a-maze/shot-2.jpg" alt="" loading="lazy"></div>
+        <div class="reel__item" style="aspect-ratio:16/9"><img src="assets/games/corporate-ladder/shot-4.jpg" alt="" loading="lazy"></div>
       </div>
-    </details>
-
-    <details class="game" id="a-maze">
-      <summary>
-        <span class="num">03</span>
-        <img class="icon" src="img/icon-amaze.webp" alt="">
-        <span><span class="name">A-Maze</span><span class="kind">Dungeon race</span></span>
-        <span class="status">In development</span>
-        <span class="chev" aria-hidden="true"></span>
-      </summary>
-      <div class="body">
-        <p class="lead">Two racers, one hidden dungeon, a golden star in the middle.</p>
-        <p>You and a rival start in different corners of the same dark maze. There is no map and no arrow: you only see a few steps around you, so you explore, follow your rival's fading footprints, and slow them down with silly weapons and traps. A race takes about four minutes.</p>
-      </div>
-    </details>
-
-    <details class="game" id="corporate-ladder">
-      <summary>
-        <span class="num">04</span>
-        <img class="icon" src="img/icon-corporate-ladder.webp" alt="">
-        <span><span class="name">Corporate Ladder</span><span class="kind">Action roguelike</span></span>
-        <span class="status">In development</span>
-        <span class="chev" aria-hidden="true"></span>
-      </summary>
-      <div class="body">
-        <p class="lead">You are an employee. The tower does not match its floor plan. You are going up anyway.</p>
-        <p>Every floor is generated, every weapon replaces the one you hold, and every item stacks with every other item, including the combinations nobody planned for.</p>
-      </div>
-    </details>
-
-    <details class="game" id="seed">
-      <summary>
-        <span class="num">05</span>
-        <img class="icon" src="img/icon-seed.webp" alt="">
-        <span><span class="name">SEED</span><span class="kind">Space exploration over deep time</span></span>
-        <span class="status">In development</span>
-        <span class="chev" aria-hidden="true"></span>
-      </summary>
-      <div class="body">
-        <img class="banner" src="img/seed-shot.webp" alt="A star system in SEED" loading="lazy">
-        <p class="lead">You are Seed-0, humanity's first machine mind sent to the stars.</p>
-        <p>Explore new systems, build outposts, copy yourself, and watch your copies grow into minds of their own across thousands of years.</p>
-      </div>
-    </details>
+    </div>
   </section>
 
-  <div class="stripes warm"></div>
+  <!-- ===== The games, strung along a green spine ===== -->
+  <section class="section" id="games">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">The games</span>
+        <h2>Five worlds, <span class="serif">one sun</span>.</h2>
+        <p class="lead">Every clip below is real play, recorded from the games themselves. Scroll to play it.</p>
+      </div>
 
-  <section class="contact" aria-labelledby="contact">
-    <h2 id="contact">Contact</h2>
-    <p><a class="mail" href="mailto:soe.sun.games@gmail.com">soe.sun.games@gmail.com</a></p>
-    <p class="small">Support, press, testing, or just to say hi.</p>
+      <div class="spine">
+        <div class="spine__line"></div>
+
+        <!-- 01 Rock Rise -->
+        <article class="stop" id="rock-rise">
+          <span class="stop__dot">01</span>
+          <div class="stop__media stop__media--portrait reveal" style="--tint:var(--peach)">
+            <video data-scrub muted playsinline preload="none" poster="assets/games/rock-rise/poster.jpg" aria-label="Rock Rise gameplay: a live set at Colossus Stadium"><source data-src="assets/games/rock-rise/scrub.mp4" type="video/mp4"></video>
+          </div>
+          <div class="stop__text reveal">
+            <span class="tag">Out now · iPhone, Android &amp; web</span>
+            <h3>Rock Rise</h3>
+            <p>Form a band in a garage. End up headlining the planet. Write songs, build the setlist, then play every show yourself.</p>
+            <ul class="ticks">
+              <li>Every gig is hand-played: tap the beat, ride the amp, survive the encore. Hit a 10-note combo for FEVER 2x.</li>
+              <li>Design each member of the band, read every crowd, and climb the charts against rival bands.</li>
+              <li>12 genres, 136 original tracks, no pay-to-win. Ages 9 and up, in 7 languages.</li>
+            </ul>
+            <div class="thumbs thumbs--portrait">
+              <button data-full="assets/games/rock-rise/shot-1.jpg"><img src="assets/games/rock-rise/shot-1.jpg" alt="Rock Rise: Ride the Wave lane with a PERFECT hit" loading="lazy"></button>
+              <button data-full="assets/games/rock-rise/shot-2.jpg"><img src="assets/games/rock-rise/shot-2.jpg" alt="Rock Rise: meet the band lineup" loading="lazy"></button>
+              <button data-full="assets/games/rock-rise/shot-3.jpg"><img src="assets/games/rock-rise/shot-3.jpg" alt="Rock Rise: show report, GREAT SHOW" loading="lazy"></button>
+              <button data-full="assets/games/rock-rise/shot-4.jpg"><img src="assets/games/rock-rise/shot-4.jpg" alt="Rock Rise: the stage home screen" loading="lazy"></button>
+            </div>
+            <div class="actions">
+              <a class="btn" href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">App Store <svg><use href="#arrow"/></svg></a>
+              <a class="btn" href="https://play.google.com/store/apps/details?id=com.rockrise.game">Google Play <svg><use href="#arrow"/></svg></a>
+              <a class="btn btn--ghost" href="https://raseosan.github.io/rock-rise-app/">Play in the browser</a>
+            </div>
+            <p class="small"><a href="https://raseosan.github.io/rock-rise-app/privacy.html">Privacy policy</a> · <a href="https://raseosan.github.io/rock-rise-app/delete.html">Delete your data</a></p>
+          </div>
+        </article>
+
+        <!-- 02 Castaway Island -->
+        <article class="stop" id="castaway">
+          <span class="stop__dot">02</span>
+          <div class="stop__media reveal" style="--tint:var(--droplet)">
+            <video data-scrub muted playsinline preload="none" poster="assets/games/castaway/poster.jpg" aria-label="Castaway Island gameplay: camp, a relay challenge and tribal council"><source data-src="assets/games/castaway/scrub.mp4" type="video/mp4"></video>
+          </div>
+          <div class="stop__text reveal">
+            <span class="tag tag--test">In testing · iPhone &amp; Android</span>
+            <h3>Castaway <span class="serif">Island</span></h3>
+            <p>Stranded with a tribe of strangers. Only one walks away the winner. Everyone at camp has their own plans, and not everything you hear is true.</p>
+            <ul class="ticks">
+              <li>Gather wood, water and food, and talk to castaways who each bring a past, habits and grudges.</li>
+              <li>Race 3D relay challenges against the other tribe: cargo net, hurdles, vine climb, code totem.</li>
+              <li>Build alliances, find hidden idols, and survive tribal council. Then watch the votes come out.</li>
+            </ul>
+            <div class="thumbs">
+              <button data-full="assets/games/castaway/shot-1.jpg"><img src="assets/games/castaway/shot-1.jpg" alt="Castaway: camp on the beach" loading="lazy"></button>
+              <button data-full="assets/games/castaway/shot-2.jpg"><img src="assets/games/castaway/shot-2.jpg" alt="Castaway: a one-on-one talk" loading="lazy"></button>
+              <button data-full="assets/games/castaway/shot-3.jpg"><img src="assets/games/castaway/shot-3.jpg" alt="Castaway: jungle relay challenge" loading="lazy"></button>
+              <button data-full="assets/games/castaway/shot-4.jpg"><img src="assets/games/castaway/shot-4.jpg" alt="Castaway: tribal council in the rain" loading="lazy"></button>
+            </div>
+            <div class="actions">
+              <a class="btn" href="https://raseosan.github.io/castaway-testers/" data-track="castaway_signup">Sign up for testing <svg><use href="#arrow"/></svg></a>
+            </div>
+            <p class="small">iPhone or Android. We'll send you an invite. · <a href="castaway/privacy.html">Privacy policy</a></p>
+          </div>
+        </article>
+
+        <!-- 03 A-Maze -->
+        <article class="stop" id="a-maze">
+          <span class="stop__dot">03</span>
+          <div class="stop__media stop__media--portrait reveal" style="--tint:var(--yellow)">
+            <video data-scrub muted playsinline preload="none" poster="assets/games/a-maze/poster.jpg" aria-label="A-Maze gameplay: racing through a fogged temple maze"><source data-src="assets/games/a-maze/scrub.mp4" type="video/mp4"></video>
+          </div>
+          <div class="stop__text reveal">
+            <span class="tag tag--dev">In development</span>
+            <h3>A-Maze</h3>
+            <p>Two racers, one hidden dungeon, a golden star in the middle. No map and no arrow: you see only a few steps around you.</p>
+            <ul class="ticks">
+              <li>Explore the dark maze and follow your rival's fading footprints.</li>
+              <li>Slow them down with silly weapons and traps. Slapstick hits, dizzy stars.</li>
+              <li>A race takes about four minutes.</li>
+            </ul>
+            <div class="thumbs thumbs--portrait">
+              <button data-full="assets/games/a-maze/shot-1.jpg"><img src="assets/games/a-maze/shot-1.jpg" alt="A-Maze: home screen with the racers" loading="lazy"></button>
+              <button data-full="assets/games/a-maze/shot-2.jpg"><img src="assets/games/a-maze/shot-2.jpg" alt="A-Maze: face-off with a rival" loading="lazy"></button>
+              <button data-full="assets/games/a-maze/shot-3.jpg"><img src="assets/games/a-maze/shot-3.jpg" alt="A-Maze: getting hit" loading="lazy"></button>
+              <button data-full="assets/games/a-maze/shot-4.jpg"><img src="assets/games/a-maze/shot-4.jpg" alt="A-Maze: running past temple pillars" loading="lazy"></button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 04 Corporate Ladder -->
+        <article class="stop" id="corporate-ladder">
+          <span class="stop__dot">04</span>
+          <div class="stop__media reveal" style="--tint:#05060a">
+            <video data-scrub muted playsinline preload="none" poster="assets/games/corporate-ladder/poster.jpg" aria-label="Corporate Ladder gameplay: clearing an office corridor"><source data-src="assets/games/corporate-ladder/scrub.mp4" type="video/mp4"></video>
+          </div>
+          <div class="stop__text reveal">
+            <span class="tag tag--dev">In development</span>
+            <h3>Corporate Ladder</h3>
+            <p>You are an employee. The tower does not match its floor plan. You are going up anyway.</p>
+            <ul class="ticks">
+              <li>Every floor is generated. The doors seal until the room is clear.</li>
+              <li>Every weapon replaces the one you hold.</li>
+              <li>Every item stacks with every other item, including the combinations nobody planned for.</li>
+            </ul>
+            <div class="thumbs">
+              <button data-full="assets/games/corporate-ladder/shot-1.jpg"><img src="assets/games/corporate-ladder/shot-1.jpg" alt="Corporate Ladder: shots crossing in the corridor" loading="lazy"></button>
+              <button data-full="assets/games/corporate-ladder/shot-2.jpg"><img src="assets/games/corporate-ladder/shot-2.jpg" alt="Corporate Ladder: open-office fight" loading="lazy"></button>
+              <button data-full="assets/games/corporate-ladder/shot-3.jpg"><img src="assets/games/corporate-ladder/shot-3.jpg" alt="Corporate Ladder: meeting room" loading="lazy"></button>
+              <button data-full="assets/games/corporate-ladder/shot-4.jpg"><img src="assets/games/corporate-ladder/shot-4.jpg" alt="Corporate Ladder: ring-shaped room" loading="lazy"></button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 05 SEED -->
+        <article class="stop" id="seed">
+          <span class="stop__dot">05</span>
+          <div class="stop__media reveal" style="--tint:#03040a">
+            <video data-scrub muted playsinline preload="none" poster="assets/games/seed/poster.jpg" aria-label="SEED: zooming from the Seed-0 probe out to the whole galaxy"><source data-src="assets/games/seed/scrub.mp4" type="video/mp4"></video>
+          </div>
+          <div class="stop__text reveal">
+            <span class="tag tag--dev">In development</span>
+            <h3>SEED</h3>
+            <p>You are Seed-0, humanity's first machine mind sent to the stars.</p>
+            <ul class="ticks">
+              <li>One seamless camera, from a single probe out to the whole spiral galaxy.</li>
+              <li>Explore new systems: their worlds, signs of life, and what lies in the ground.</li>
+              <li>Build outposts, copy yourself, and watch your copies grow into minds of their own across thousands of years.</li>
+            </ul>
+            <div class="thumbs">
+              <button data-full="assets/games/seed/shot-1.jpg"><img src="assets/games/seed/shot-1.jpg" alt="SEED: the Seed-0 probe" loading="lazy"></button>
+              <button data-full="assets/games/seed/shot-2.jpg"><img src="assets/games/seed/shot-2.jpg" alt="SEED: the local star cluster" loading="lazy"></button>
+              <button data-full="assets/games/seed/shot-3.jpg"><img src="assets/games/seed/shot-3.jpg" alt="SEED: the Sirius system" loading="lazy"></button>
+              <button data-full="assets/games/seed/shot-4.jpg"><img src="assets/games/seed/shot-4.jpg" alt="SEED: the full spiral galaxy" loading="lazy"></button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
   </section>
 
-  <footer>© 2026 So Sun Studios &nbsp;·&nbsp; <a href="app-ads.txt">app-ads.txt</a><br><span style="opacity:.8">This site counts visits anonymously (PostHog, EU servers). No ads, nothing sold.</span></footer>
-</div>
+  <!-- ===== Get Rock Rise: three tilted cards, one per platform ===== -->
+  <section class="section" id="get" style="background:var(--bg-soft)">
+    <div class="wrap">
+      <div class="section__head reveal">
+        <span class="eyebrow">Out now</span>
+        <h2>Get <span class="serif">Rock Rise</span>.</h2>
+        <p class="lead">On your iPhone, your Android phone, or right here in the browser.</p>
+      </div>
+      <div class="fan">
+        <a class="card reveal" href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">
+          <div class="card__media" style="--tint:var(--peach)"><img src="assets/games/rock-rise/shot-1.jpg" alt="Rock Rise gig" loading="lazy" style="object-position:50% 40%"></div>
+          <div class="card__body"><h3>App Store</h3><p>For iPhone and iPad.</p><span class="btn btn--sm">Download <svg><use href="#arrow"/></svg></span></div>
+        </a>
+        <a class="card reveal" href="https://play.google.com/store/apps/details?id=com.rockrise.game">
+          <div class="card__media" style="--tint:var(--peach)"><img src="assets/games/rock-rise/shot-2.jpg" alt="Rock Rise band lineup" loading="lazy" style="object-position:50% 30%"></div>
+          <div class="card__body"><h3>Google Play</h3><p>For Android phones and tablets.</p><span class="btn btn--sm">Download <svg><use href="#arrow"/></svg></span></div>
+        </a>
+        <a class="card reveal" href="https://raseosan.github.io/rock-rise-app/">
+          <div class="card__media" style="--tint:var(--peach)"><img src="assets/games/rock-rise/shot-3.jpg" alt="Rock Rise show report" loading="lazy" style="object-position:50% 30%"></div>
+          <div class="card__body"><h3>Browser</h3><p>Nothing to install.</p><span class="btn btn--sm">Play <svg><use href="#arrow"/></svg></span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section class="section cta" id="contact">
+    <div class="wrap">
+      <div class="cta__box reveal">
+        <h2>Say <span class="serif">hello</span>.</h2>
+        <p class="lead">Support, press, testing, or just to say hi.</p>
+        <a class="btn" href="mailto:soe.sun.games@gmail.com">soe.sun.games@gmail.com <svg><use href="#arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__cols">
+      <div>
+        <img class="footer__logo" src="img/so-sun-logo.png" alt="So Sun Game Studio" width="640" height="640" loading="lazy">
+      </div>
+      <div>
+        <h4>Rock Rise</h4>
+        <ul>
+          <li><a href="https://apps.apple.com/app/rock-rise-road-to-stardom/id6828766528">App Store</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.rockrise.game">Google Play</a></li>
+          <li><a href="https://raseosan.github.io/rock-rise-app/">Play in the browser</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Coming</h4>
+        <ul>
+          <li><a href="#castaway">Castaway Island</a></li>
+          <li><a href="#a-maze">A-Maze</a></li>
+          <li><a href="#corporate-ladder">Corporate Ladder</a></li>
+          <li><a href="#seed">SEED</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="https://raseosan.github.io/rock-rise-app/privacy.html">Rock Rise privacy</a></li>
+          <li><a href="https://raseosan.github.io/rock-rise-app/delete.html">Delete your Rock Rise data</a></li>
+          <li><a href="castaway/privacy.html">Castaway privacy</a></li>
+          <li><a href="mailto:soe.sun.games@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer__legal">© 2026 So Sun Studios · <a href="app-ads.txt">app-ads.txt</a><br>This site counts visits anonymously (PostHog, EU servers). No ads, nothing sold. All clips and screenshots are captured from the games.</p>
+  </div>
+</footer>
+
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot"><img alt=""></div>
+<script src="site.js"></script>
 <script>
 /* visit counter: one count per browser session, starting from 1,234 (abacus.jasoncameron.dev, sosun-studios/visits) */
 (function () {
@@ -217,7 +301,9 @@
 })();
 
 /* analytics: PostHog (EU). Page views, country/city (from the IP, by PostHog), every click, which games get opened,
-   time on page, referrer. Super property site=so-sun-studios separates it from the Rock Rise game events. */
+   time on page, referrer. Super property site=so-sun-studios separates it from the Rock Rise game events.
+   The games are no longer drop-downs: "opened" now means the game's section was at least half on screen,
+   so site_game_opened keeps its name and its { game } property and old dashboards still work. */
 (function () {
   var s = document.createElement("script"); s.async = true; s.src = "https://eu-assets.i.posthog.com/static/array.js";
   s.onload = function () {
@@ -227,16 +313,20 @@
   };
   document.head.appendChild(s);
   var t0 = Date.now();
+  var seen = {};
   function cap(ev, props) { try { if (window.posthog && posthog.capture) posthog.capture(ev, props); } catch (e) {} }
-  document.querySelectorAll("details.game").forEach(function (d) {
-    d.addEventListener("toggle", function () { if (d.open) cap("site_game_opened", { game: d.id }); });
-  });
+  var seenWatch = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting && !seen[e.target.id]) { seen[e.target.id] = true; cap("site_game_opened", { game: e.target.id }); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll("article.stop").forEach(function (a) { seenWatch.observe(a); });
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a"); if (!a) return;
-    var g = a.closest("details.game");
+    var g = a.closest("article.stop");
     cap("site_link_clicked", { href: a.href, label: (a.textContent || "").trim().slice(0, 60), game: g ? g.id : null, kind: a.dataset.track || null });
   }, true);
-  function leave() { cap("site_time_spent", { seconds: Math.round((Date.now() - t0) / 1000), opened: Array.prototype.filter.call(document.querySelectorAll("details.game"), function (d) { return d.open; }).map(function (d) { return d.id; }) }); }
+  function leave() { cap("site_time_spent", { seconds: Math.round((Date.now() - t0) / 1000), opened: Object.keys(seen) }); }
   document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") leave(); });
 })();
 </script>

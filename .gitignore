@@ -1,0 +1,4 @@
+# Old autoplay clips, kept locally only. The site uses scrub.mp4.
+assets/games/*/loop.*
+# Antz is not on the site (15 Nov: no web builds for unpublished games). Captures kept locally.
+assets/games/antz/
